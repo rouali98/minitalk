@@ -5,11 +5,37 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rouali <rouali@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/25 12:51:26 by rouali            #+#    #+#             */
-/*   Updated: 2023/01/25 12:51:27 by rouali           ###   ########.fr       */
+/*   Created: 2023/01/28 16:33:14 by rouali            #+#    #+#             */
+/*   Updated: 2023/01/28 16:33:17 by rouali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "minitalk.h"
+
+int	ft_atoi(const char *str)
+{
+	int	i;
+	int	j;
+	int	result;
+
+	i = 0;
+	j = 1;
+	result = 0;
+	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	if (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i] == '-')
+			j = j * -1;
+		i++;
+	}
+	while (ft_isdigit((int)str[i]))
+	{
+		result = result * 10 + str[i] - '0';
+		i++;
+	}
+	return (result * j);
+}
 
 void	ft_putchar(char c)
 {
@@ -37,15 +63,6 @@ void	ft_putnbr(int n)
 	}
 }
 
-int	ft_isdigit(int n)
-{
-	if (n >= '0' && n <= '9')
-	{
-		return (1);
-	}
-	return (0);
-}
-
 void	ft_putstr(char *s)
 {
 	int	i;
@@ -60,27 +77,11 @@ void	ft_putstr(char *s)
 	}
 }
 
-int	ft_atoi(const char *str)
+int	ft_isdigit(int n)
 {
-	int	i;
-	int	j;
-	int	result;
-
-	i = 0;
-	j = 1;
-	result = 0;
-	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
-		i++;
-	if (str[i] == '-' || str[i] == '+')
+	if (n >= '0' && n <= '9')
 	{
-		if (str[i] == '-')
-			j = j * -1;
-		i++;
+		return (1);
 	}
-	while (ft_isdigit((int)str[i]))
-	{
-		result = result * 10 + str[i] - '0';
-		i++;
-	}
-	return (result * j);
+	return (0);
 }

@@ -11,30 +11,25 @@
 # **************************************************************************** #
 NAME		=  server client
 
-SRCS		=	client.c\
-				server.c\
-				libft.c
+CC			= cc
 
+CFLAGS		=	-Wall -Wextra -Werror
 
-OBJS		= $(SRCS:.c=.o)
-
-CC			= gcc
-
-CFLAGS		=	-Wall -Wextra -Werror -c
-
+OBJS		= server.o client.o libft.o
 
 all:		$(NAME)
 
-$(NAME):	$(OBJS)
-	$(CC) $(CFLAGS) $(SRCS)
-	$(CC) -o server server.o libft.o
-	$(CC) -o client client.o libft.o
+server:  server.c libft.c
+	$(CC) $(CFLAGS) server.c libft.c -o server
 
+client:  client.c libft.c
+	$(CC) $(CFLAGS) client.c libft.c -o client
 
 clean:
 	rm -f $(OBJS)
 
 fclean:		clean
-	rm -f $(NAME)
+	rm -f server client
+
 
 re:		fclean all

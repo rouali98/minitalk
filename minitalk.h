@@ -36,5 +36,6 @@ void	ft_putnbr(int n);
 void	ft_putchar(char c);
 int		ft_atoi(const char *str);
 int		ft_isdigit(int n);
+int		checker_pid(char *n);
 
 #endif

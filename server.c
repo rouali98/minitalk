@@ -16,6 +16,8 @@ int	powr(int r, int i)
 	int	power;
 
 	power = 1;
+	if (i < 0)
+		return (0);
 	while (i)
 	{
 		power *= r;
@@ -44,11 +46,17 @@ void	convert(int *n)
 	ft_putchar(dec);
 }
 
-void	handl_message(int segnals)
+void	handl_message(int segnals, siginfo_t *info, void *t)
 {
 	static int	binarys[8];
 	static int	c;
+	static int	opid;
 
+	(void)t;
+	if (opid != info->si_pid)
+	{
+		c = 0;
+	}
 	if (segnals == SIGUSR1)
 	{
 		binarys[c] = 1;
@@ -64,18 +72,21 @@ void	handl_message(int segnals)
 		convert(binarys);
 		c = 0;
 	}
+	opid = info->si_pid;
 }
 
 int	main(void)
 {
-	int	sig;
+	int					sig;
+	struct sigaction	sa;
 
+	sa.sa_sigaction = handl_message;
+	sa.sa_flags = 0;
 	sig = getpid();
 	ft_putnbr(sig);
 	ft_putchar('\n');
-	signal(SIGUSR1, handl_message);
-	signal(SIGUSR2, handl_message);
+	sigaction(SIGUSR1, &sa, NULL);
+	sigaction(SIGUSR2, &sa, NULL);
 	while (1)
-	{
-	}
+		sleep(1);
 }
