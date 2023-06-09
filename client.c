@@ -18,7 +18,7 @@ int	checker_pid(char *n)
 	i = 0;
 	while (n[i])
 	{
-		if ((n[i] >= 0 && n[i] <= 47) || (n[i] >= 58 && n[i] <= 127))
+		if (!ft_isdigit(n[i]))
 		{
 			return (0);
 		}
@@ -59,15 +59,24 @@ int	main(int ac, char **av)
 {
 	int	pid;
 
-	(void)ac;
+	if (ac != 3 || (av[2][0] == 0))
+	{
+		ft_putstr("Incorrect Data!");
+		return (0);
+	}
 	if (!checker_pid(av[1]))
 	{
-		ft_putstr("PID incorrect!");
+		ft_putstr("Incorrect PID!");
 		return (0);
 	}
 	if (ac == 3)
 	{
 		pid = ft_atoi(av[1]);
+		if (pid == 0)
+		{
+			ft_putstr("Incorrect PID!");
+			return (0);
+		}
 		send_message(pid, av[2]);
 	}
 	return (0);

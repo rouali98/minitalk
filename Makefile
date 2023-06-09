@@ -9,7 +9,11 @@
 #    Updated: 2023/01/25 11:56:42 by rouali           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-NAME		=  server client
+NAME		=  minitalk
+
+SERVER		= server
+
+CLIENT		= client
 
 CC			= cc
 
@@ -19,10 +23,12 @@ OBJS		= server.o client.o libft.o
 
 all:		$(NAME)
 
-server:  server.c libft.c
+$(NAME):	$(SERVER) $(CLIENT)
+
+$(SERVER):  server.c libft.c
 	$(CC) $(CFLAGS) server.c libft.c -o server
 
-client:  client.c libft.c
+$(CLIENT):  client.c libft.c
 	$(CC) $(CFLAGS) client.c libft.c -o client
 
 clean:
@@ -30,6 +36,5 @@ clean:
 
 fclean:		clean
 	rm -f server client
-
 
 re:		fclean all

@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #include "minitalk.h"
 
-int	powr(int r, int i)
+int	powr(int po, int i)
 {
 	int	power;
 
@@ -20,73 +20,73 @@ int	powr(int r, int i)
 		return (0);
 	while (i)
 	{
-		power *= r;
+		power *= po;
 		i--;
 	}
 	return (power);
 }
 
-void	convert(int *n)
+void	convert(int *binarys)
 {
 	int		i;
+	int		j;
 	char	dec;
-	int		rem;
-	int		r;
+	int		rm;
 
 	i = 0;
-	r = 7;
+	j = 7;
 	dec = 0;
 	while (i < 8)
 	{
-		rem = n[r] % 10;
-		dec += rem * powr(2, i);
+		rm = binarys[j] % 10;
+		dec += rm * powr(2, i);
 		i++;
-		r--;
+		j--;
 	}
 	ft_putchar(dec);
 }
 
-void	handl_message(int segnals, siginfo_t *info, void *t)
+void	handl_message(int segnals, siginfo_t *info, void *v)
 {
 	static int	binarys[8];
-	static int	c;
-	static int	opid;
+	static int	count;
+	static int	pid;
 
-	(void)t;
-	if (opid != info->si_pid)
+	(void)v;
+	if (pid != info->si_pid)
 	{
-		c = 0;
+		pid = info->si_pid;
+		count = 0;
 	}
 	if (segnals == SIGUSR1)
 	{
-		binarys[c] = 1;
-		c++;
+		binarys[count] = 1;
+		count++;
 	}
 	else
 	{
-		binarys[c] = 0;
-		c++;
+		binarys[count] = 0;
+		count++;
 	}
-	if (c == 8)
+	if (count == 8)
 	{
 		convert(binarys);
-		c = 0;
+		count = 0;
 	}
-	opid = info->si_pid;
 }
 
 int	main(void)
 {
-	int					sig;
-	struct sigaction	sa;
+	int					pid;
+	struct sigaction	ro;
 
-	sa.sa_sigaction = handl_message;
-	sa.sa_flags = 0;
-	sig = getpid();
-	ft_putnbr(sig);
+	ro.sa_sigaction = handl_message;
+	pid = getpid();
+	ft_putnbr(pid);
 	ft_putchar('\n');
-	sigaction(SIGUSR1, &sa, NULL);
-	sigaction(SIGUSR2, &sa, NULL);
 	while (1)
-		sleep(1);
+	{
+		sigaction(SIGUSR1, &ro, NULL);
+		sigaction(SIGUSR2, &ro, NULL);
+	}
 }
